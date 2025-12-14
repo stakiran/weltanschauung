@@ -4,5 +4,4 @@
 - 1: xxxx_proto.html をつくります
     - xxxx_proto.html というファイル名 HTML を実装します
     - 実装はフロントエンドのみで完結させ、CSS や JavaScript も xxxx_proto.html の中に含めます
-- 2: xxxx_proto_EN.html をつくります
-    - xxxx_proto.html の英語対応を行ったものを xxxx_proto_EN.html としてつくります
+    - 具体的なデータがヴェルドック内で提示されていない場合は、つくってください。最低 3 個用意します。機械的なダミーではなく、ヴェルタンシャウンの文脈に即した、わかりやすい例をつくってください。なおデータはハードコードで埋め込んで構いません。

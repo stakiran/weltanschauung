@@ -2,81 +2,116 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8">
-  <title>OpenTool（オープンツール）</title>
+  <title>OpenTool Prototype</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; padding: 0; }
-    header { text-align: center; padding: 20px; background-color: #f8f9fa; }
-    .tagline { font-style: italic; color: #555; margin: 10px 0; }
-    .badge { display: inline-block; padding: 2px 6px; margin: 0 4px; background-color: #007bff; color: #fff; border-radius: 4px; font-size: 0.8em; cursor: default; transition: background-color 0.2s; }
-    ul { list-style-type: none; padding-left: 0; }
-    ul ul { padding-left: 20px; }
-    section { padding: 20px; }
-    h2 { border-bottom: 2px solid #ddd; padding-bottom: 5px; margin-top: 30px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { border: 1px solid #ccc; padding: 8px; text-align: left; }
-    th { background-color: #e9ecef; }
+    body { font-family: sans-serif; margin: 20px; line-height: 1.6; }
+    header { text-align: center; margin-bottom: 30px; }
+    header h1 { margin: 0; font-size: 2.2em; }
+    header p { margin: 5px 0; color: #555; }
+    .company { margin-bottom: 20px; border: 1px solid #ccc; border-radius: 6px; padding: 10px; }
+    .company h2 { margin: 0; font-size: 1.5em; cursor: pointer; }
+    .tools { margin-top: 10px; }
+    .tool { margin: 8px 0; }
+    .tool strong { display: inline-block; width: 80px; }
+    .label {
+      display: inline-block;
+      padding: 2px 6px;
+      margin: 0 4px;
+      border-radius: 4px;
+      color: #fff;
+      font-size: 0.85em;
+    }
+    .scope-3 { background: #007bff; }  /* 全社採用 */
+    .scope-2 { background: #28a745; }  /* PJ・グループ */
+    .scope-1 { background: #6c757d; }  /* 個人 */
+    .req-不要 { background: #17a2b8; } /* 申請不要 */
+    .req-要   { background: #dc3545; } /* 申請要 */
+    .proxy-なし { background: #343a40; } /* 代行なし */
+    .proxy-あり { background: #ffc107; color: #212529; } /* 代行あり */
   </style>
+  <script>
+    function toggleSection(id) {
+      var el = document.getElementById(id);
+      el.style.display = (el.style.display === 'none' ? 'block' : 'none');
+    }
+  </script>
 </head>
 <body>
   <header>
-    <h1>OpenTool（オープンツール）</h1>
-    <p class="tagline">本質は道具を見ればわかるんだ。</p>
-    <p class="tagline">道具は正直だ。<br>人をつくるのも、文化もつくるのも、実はツールなのです。</p>
+    <h1>OpenTool</h1>
+    <p>本質は道具を見ればわかるんだ。</p>
+    <p>企業が使っているツールの情報を集める口コミサイト</p>
   </header>
-
-  <section id="explanation">
-    <h2>解説</h2>
-    <ul>
-      <li>●●株式会社
-        <ul>
-          <li>Teams 
-            <span class="badge">全社採用</span>
-            <span class="badge">申請不要</span>
-            <span class="badge">代行なし</span>
-          </li>
-          <li>Slack 
-            <span class="badge">PJ採用</span>
-            <span class="badge">申請要</span>
-            <span class="badge">代行なし</span>
-          </li>
-          <li>GitHub 
-            <span class="badge">PJ採用</span>
-            <span class="badge">申請要</span>
-            <span class="badge">代行あり</span>
-          </li>
-        </ul>
-      </li>
-    </ul>
-  </section>
-
-  <section id="labels">
-    <h2>3つのラベルについて</h2>
-    <h3>採用範囲</h3>
-    <table>
-      <tr><th>Lv</th><th>説明</th></tr>
-      <tr><td>3</td><td>全社（社員全員に提供されるレベル）</td></tr>
-      <tr><td>2</td><td>PJまたはグループ（特定のプロジェクトまたは組織単位に提供されるレベル）</td></tr>
-      <tr><td>1</td><td>個人（特定個人が使っているレベル）</td></tr>
-    </table>
-
-    <h3>申請要否</h3>
-    <ul>
-      <li>申請不要：申請なしで使えるか、申請がオープン（形式的かつ軽量で事実上誰でも通る）なもの</li>
-      <li>申請要：不要でないもの。例：上司の説得や事務局への申請書類提出など必要</li>
-    </ul>
-
-    <h3>代行有無</h3>
-    <ul>
-      <li>代行なし：オリジナルを直接使える（例：OpenAI APIを一社員が叩ける）</li>
-      <li>代行あり：代行サービスを介する（例：OpenAI APIをラップしたサービスを使用）</li>
-    </ul>
-  </section>
-
-  <script>
-    document.querySelectorAll('.badge').forEach(badge => {
-      badge.addEventListener('mouseover', () => badge.style.backgroundColor = '#0056b3');
-      badge.addEventListener('mouseout', () => badge.style.backgroundColor = '#007bff');
-    });
-  </script>
+  <main>
+    <div class="company">
+      <h2 onclick="toggleSection('alpha')">Alpha株式会社</h2>
+      <div class="tools" id="alpha">
+        <div class="tool">
+          <strong>Teams</strong>
+          <span class="label scope-3">全社採用</span>
+          <span class="label req-不要">申請不要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+        <div class="tool">
+          <strong>Slack</strong>
+          <span class="label scope-2">PJ・グループ</span>
+          <span class="label req-要">申請要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+        <div class="tool">
+          <strong>GitHub</strong>
+          <span class="label scope-2">PJ・グループ</span>
+          <span class="label req-要">申請要</span>
+          <span class="label proxy-あり">代行あり</span>
+        </div>
+      </div>
+    </div>
+    <div class="company">
+      <h2 onclick="toggleSection('beta')">Beta株式会社</h2>
+      <div class="tools" id="beta">
+        <div class="tool">
+          <strong>Zoom</strong>
+          <span class="label scope-1">個人</span>
+          <span class="label req-不要">申請不要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+        <div class="tool">
+          <strong>Jira</strong>
+          <span class="label scope-2">PJ・グループ</span>
+          <span class="label req-要">申請要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+        <div class="tool">
+          <strong>Docker</strong>
+          <span class="label scope-3">全社採用</span>
+          <span class="label req-要">申請要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+      </div>
+    </div>
+    <div class="company">
+      <h2 onclick="toggleSection('gamma')">Gamma株式会社</h2>
+      <div class="tools" id="gamma">
+        <div class="tool">
+          <strong>AWS</strong>
+          <span class="label scope-3">全社採用</span>
+          <span class="label req-要">申請要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+        <div class="tool">
+          <strong>Figma</strong>
+          <span class="label scope-2">PJ・グループ</span>
+          <span class="label req-不要">申請不要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+        <div class="tool">
+          <strong>ChatGPT</strong>
+          <span class="label scope-1">個人</span>
+          <span class="label req-不要">申請不要</span>
+          <span class="label proxy-なし">代行なし</span>
+        </div>
+      </div>
+    </div>
+  </main>
 </body>
 </html>
