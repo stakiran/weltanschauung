@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>Draft Catapult プロトタイプ</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    h1 { text-align: center; }
+    section { margin-bottom: 15px; }
+    #draft-preview { border: 1px solid #ccc; padding: 10px; margin-top: 5px; background: #f9f9f9; }
+    #notification { margin-top: 20px; color: green; font-weight: bold; }
+    label { display: block; margin-bottom: 5px; }
+    select { width: 100%; padding: 5px; }
+    button { padding: 10px 20px; font-size: 16px; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <h1>Draft Catapult プロトタイプ</h1>
+
+  <section id="draft-section">
+    <label for="draft-select">下書きを選択：</label>
+    <select id="draft-select"></select>
+    <div id="draft-preview">プレビューがここに表示されます。</div>
+  </section>
+
+  <section id="catapult-section">
+    <label for="catapult-select">送信先を選択：</label>
+    <select id="catapult-select">
+      <option value="Slack #general">Slack #general</option>
+      <option value="Email to Team">Email to Team</option>
+      <option value="Blog Post">Blog Post</option>
+    </select>
+  </section>
+
+  <button id="launch-button">発射</button>
+  <div id="notification"></div>
+
+  <script>
+    const drafts = [
+      { id: 1, title: '企画書下書き', preview: '新プロジェクトの概要と目的をまとめた下書きです。' },
+      { id: 2, title: '仕様メモ', preview: '機能要件と仕様のチェックポイントをリスト化したメモです。' },
+      { id: 3, title: 'ブログ下書き', preview: '技術ブログの記事草案です。イントロ・背景・結論を含みます。' }
+    ];
+
+    const draftSelect = document.getElementById('draft-select');
+    const draftPreview = document.getElementById('draft-preview');
+    const catapultSelect = document.getElementById('catapult-select');
+    const launchButton = document.getElementById('launch-button');
+    const notification = document.getElementById('notification');
+
+    function populateDrafts() {
+      drafts.forEach(d => {
+        const option = document.createElement('option');
+        option.value = d.id;
+        option.textContent = d.title;
+        draftSelect.appendChild(option);
+      });
+      updatePreview();
+    }
+
+    function updatePreview() {
+      const selectedId = parseInt(draftSelect.value, 10);
+      const draft = drafts.find(d => d.id === selectedId);
+      draftPreview.innerHTML = '<h3>' + draft.title + '</h3><p>' + draft.preview + '</p>';
+    }
+
+    function launchDraft() {
+      const draft = drafts.find(d => d.id === parseInt(draftSelect.value, 10));
+      const target = catapultSelect.value;
+      notification.textContent = `下書き「${draft.title}」を「${target}」に送信しました！`;
+    }
+
+    draftSelect.addEventListener('change', updatePreview);
+    launchButton.addEventListener('click', launchDraft);
+    window.onload = populateDrafts;
+  </script>
+</body>
+</html>
