@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>リアクション疲れ対策プロトタイプ</title>
+  <style>
+    body { font-family: sans-serif; margin: 20px; }
+    header { font-size: 24px; margin-bottom: 20px; }
+    section { margin-bottom: 30px; }
+    .item { display: flex; align-items: center; justify-content: space-between; padding: 5px; border-bottom: 1px solid #eee; }
+    button { padding: 5px 10px; cursor: pointer; }
+    .bar-container { display: flex; align-items: center; margin: 5px 0; }
+    .bar-label { width: 60px; }
+    .bar { background-color: #4caf50; height: 20px; margin-left: 10px; }
+  </style>
+</head>
+<body>
+  <header>リアクション疲れ対策プロトタイプ</header>
+
+  <section id="masking">
+    <h2>フルマスク</h2>
+    <label>
+      キャラクター:
+      <select id="characterSelect">
+        <option value="匿名">匿名</option>
+        <option value="シャーロット">シャーロット</option>
+        <option value="キャプテン">キャプテン</option>
+      </select>
+    </label>
+    <p>現在のキャラクター: <span id="currentCharacter">匿名</span></p>
+  </section>
+
+  <section id="bookmark">
+    <h2>ブックマーク</h2>
+    <div id="itemsList"></div>
+  </section>
+
+  <section id="reminder">
+    <h2>リマインド</h2>
+    <button id="setRemind">リマインド設定 (5秒後)</button>
+  </section>
+
+  <section id="analytics">
+    <h2>アクセス・エンゲージメント解析</h2>
+    <div id="chart"></div>
+  </section>
+
+  <script>
+    const items = [
+      { id: 1, name: '記事A', view: 0, bookmarked: false, reminded: 0 },
+      { id: 2, name: '記事B', view: 0, bookmarked: false, reminded: 0 },
+      { id: 3, name: '記事C', view: 0, bookmarked: false, reminded: 0 },
+    ];
+
+    const itemsList = document.getElementById('itemsList');
+    function renderItems() {
+      itemsList.innerHTML = '';
+      items.forEach(item => {
+        const div = document.createElement('div');
+        div.className = 'item';
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = `${item.name} (view: ${item.view})`;
+        nameSpan.style.cursor = 'pointer';
+        nameSpan.onclick = () => {
+          item.view++;
+          renderItems();
+          renderChart();
+        };
+        const btn = document.createElement('button');
+        btn.textContent = item.bookmarked ? '★' : '☆';
+        btn.onclick = () => {
+          item.bookmarked = !item.bookmarked;
+          renderItems();
+          renderChart();
+        };
+        div.appendChild(nameSpan);
+        div.appendChild(btn);
+        itemsList.appendChild(div);
+      });
+    }
+    renderItems();
+
+    document.getElementById('setRemind').onclick = () => {
+      const toRemind = items.filter(i => i.bookmarked);
+      toRemind.forEach(item => {
+        setTimeout(() => {
+          alert(`【リマインド】${item.name} を読むのを忘れずに！`);
+          item.reminded++;
+          renderChart();
+        }, 5000);
+      });
+    };
+
+    function renderChart() {
+      const chart = document.getElementById('chart');
+      chart.innerHTML = '';
+      items.forEach(item => {
+        const container = document.createElement('div');
+        container.className = 'bar-container';
+        const label = document.createElement('div');
+        label.className = 'bar-label';
+        label.textContent = item.name;
+        const total = item.view + item.reminded;
+        const bar = document.createElement('div');
+        bar.className = 'bar';
+        bar.style.width = `${total * 20}px`;
+        container.appendChild(label);
+        container.appendChild(bar);
+        chart.appendChild(container);
+      });
+    }
+    renderChart();
+
+    document.getElementById('characterSelect').onchange = e => {
+      document.getElementById('currentCharacter').textContent = e.target.value;
+    };
+  </script>
+</body>
+</html>
