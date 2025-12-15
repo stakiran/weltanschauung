@@ -2,5 +2,9 @@
 
 ## [draft_catapult](draft_catapult.md) [🛠️](draft_catapult_proto.html)
 
+## [dropl](dropl.md) [🛠️](dropl_proto.html)
+
+## [engagement_fatigue](engagement_fatigue.md) [🛠️](engagement_fatigue_proto.html)
+
 ## [opentool](opentool.md) [🛠️](opentool_proto.html)
 
