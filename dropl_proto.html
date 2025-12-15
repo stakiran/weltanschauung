@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Dropl プロトタイプ</title>
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 20px auto; }
+    #controls { margin-bottom: 10px; }
+    #messageArea {
+      display: none;
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 200px;
+      overflow-y: auto;
+      background: #f9f9f9;
+      margin-bottom: 10px;
+    }
+    #dropInput { width: 80%; }
+    button { margin-left: 5px; }
+  </style>
+</head>
+<body>
+  <h1>Dropl プロトタイプ</h1>
+  <div id="controls">
+    <label>
+      プール:
+      <select id="poolSelect">
+        <option value="A">プールA</option>
+        <option value="B">プールB</option>
+        <option value="C">プールC</option>
+      </select>
+    </label>
+    <button id="connectBtn">Connect</button>
+    <button id="disconnectBtn" disabled>Disconnect</button>
+  </div>
+
+  <div id="messageArea"></div>
+
+  <div id="inputArea">
+    <input type="text" id="dropInput" placeholder="ドロップを入力" disabled />
+    <button id="sendBtn" disabled>送信</button>
+  </div>
+
+  <script>
+    // ハードコードされたプールとドロップ（メッセージ）
+    const pools = {
+      A: ["ようこそプールAへ", "プールAのサンプルドロップ②"],
+      B: ["プールBの最初のドロップ", "こちらはプールBからの2つ目"],
+      C: ["プールCダミー1", "プールCダミー2", "プールCダミー3"]
+    };
+
+    let connected = false;
+    const poolSelect = document.getElementById("poolSelect");
+    const connectBtn = document.getElementById("connectBtn");
+    const disconnectBtn = document.getElementById("disconnectBtn");
+    const messageArea = document.getElementById("messageArea");
+    const dropInput = document.getElementById("dropInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function showMessages() {
+      messageArea.innerHTML = "";
+      const key = poolSelect.value;
+      pools[key].forEach(msg => {
+        const p = document.createElement("p");
+        p.textContent = msg;
+        messageArea.appendChild(p);
+      });
+      messageArea.scrollTop = messageArea.scrollHeight;
+    }
+
+    connectBtn.addEventListener("click", () => {
+      connected = true;
+      poolSelect.disabled = true;
+      connectBtn.disabled = true;
+      disconnectBtn.disabled = false;
+      dropInput.disabled = false;
+      sendBtn.disabled = false;
+      messageArea.style.display = "block";
+      showMessages();
+    });
+
+    disconnectBtn.addEventListener("click", () => {
+      connected = false;
+      poolSelect.disabled = false;
+      connectBtn.disabled = false;
+      disconnectBtn.disabled = true;
+      dropInput.disabled = true;
+      sendBtn.disabled = true;
+      messageArea.style.display = "none";
+    });
+
+    sendBtn.addEventListener("click", () => {
+      const text = dropInput.value.trim();
+      if (!text) return;
+      const key = poolSelect.value;
+      pools[key].push(text);
+      const p = document.createElement("p");
+      p.textContent = text;
+      messageArea.appendChild(p);
+      dropInput.value = "";
+      messageArea.scrollTop = messageArea.scrollHeight;
+    });
+  </script>
+</body>
+</html>
